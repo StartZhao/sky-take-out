@@ -64,4 +64,19 @@ public interface DishMapper {
      * @param ids
      */
     void deleteByIds(List<Long> ids);
+
+    /**
+     * 根据分类id查询菜品
+     * @param categoryId
+     * @return
+     */
+    @Select("select * from dish where category_id = #{categoryId}")
+    List<Dish> getlistByCategoryId(Long categoryId);
+
+    /**
+     * 通过套餐id得到菜品集合
+     * @param setmealId
+     * @return
+     */
+    List<Dish> getlistBySetmealId(Long setmealId);
 }

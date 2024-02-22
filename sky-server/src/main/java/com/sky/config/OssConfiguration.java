@@ -2,15 +2,13 @@ package com.sky.config;
 
 import com.sky.properties.AliOssProperties;
 import com.sky.utils.AliOssUtil;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * ClassName: OssConfig
+ * ClassName: OssConfiguration
  * Package: com.sky.config
  * Description:
  * 配置类，用于创建AliOssUtil对象
@@ -20,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @Slf4j
-public class OssConfig {
+public class OssConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

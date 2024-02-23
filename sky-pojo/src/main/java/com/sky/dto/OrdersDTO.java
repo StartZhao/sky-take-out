@@ -53,4 +53,19 @@ public class OrdersDTO implements Serializable {
 
     private List<OrderDetail> orderDetails;
 
+
+    //自己认为该 OrdersDTO 缺少的属性
+
+    //配送状态  1立即送出  0选择具体时间
+    private Integer deliveryStatus;
+
+    //预计送达时间
+    private String estimatedDeliveryTime;
+
+    //餐具数量
+    private int tablewareNumber;
+
+    //餐具数量状态  1按餐量提供  0选择具体数量
+    private Integer tablewareStatus;
+
 }

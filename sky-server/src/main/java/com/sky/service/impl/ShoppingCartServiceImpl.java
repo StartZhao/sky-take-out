@@ -111,6 +111,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     /**
      * 删除购物车中一个商品
      * 购物车没有信息执行不了该方法，由于前端设计原因
+     * 由于为了程序的健壮性，应加入检验集合是否非空判断
      * @param shoppingCartDTO
      */
     @Override
@@ -122,13 +123,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         // 获得用户唯一标识
         shoppingCart.setUserId(BaseContext.getCurrentId());
         //number是否等于1
-        shoppingCart = shoppingCartMapper.list(shoppingCart).get(0);
-        if (shoppingCart.getNumber() == 1) {
-            //条件删除购物车信息
-            shoppingCartMapper.delete(shoppingCart);
-            return;
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        if (list != null && list.size() > 0) {
+            shoppingCart = list.get(0);
+            if (shoppingCart.getNumber() == 1) {
+                //条件删除购物车信息
+                shoppingCartMapper.delete(shoppingCart);
+                return;
+            }
+            shoppingCart.setNumber(shoppingCart.getNumber() - 1);
+            shoppingCartMapper.update(shoppingCart);
         }
-        shoppingCart.setNumber(shoppingCart.getNumber() - 1);
-        shoppingCartMapper.update(shoppingCart);
     }
 }

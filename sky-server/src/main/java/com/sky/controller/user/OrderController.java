@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * Package: com.sky.controller.user
  * Description:
  * C端-订单接口
+ *
  * @Author StartZhao
  * @Create 2024/2/23 17:49
  * @Version 1.0
@@ -64,6 +65,7 @@ public class OrderController {
 
     /**
      * 历史订单查询
+     *
      * @param ordersPageQueryDTO
      * @return
      */
@@ -97,6 +99,7 @@ public class OrderController {
 
     /**
      * 再来一单
+     *
      * @param id
      * @return
      */
@@ -107,5 +110,15 @@ public class OrderController {
         orderService.repetition(id);
         return Result.success();
     }
+
+
+    @GetMapping("/reminder/{id}")
+    @ApiOperation("催单")
+    public Result reminder(@PathVariable Long id) {
+        log.info("催单{}", id);
+        orderService.reminder(id);
+        return Result.success();
+    }
+
 
 }

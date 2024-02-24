@@ -29,4 +29,5 @@ public class OrderOverViewVO implements Serializable {
 
     //全部订单
     private Integer allOrders;
+
 }

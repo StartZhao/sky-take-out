@@ -16,9 +16,7 @@ import com.sky.mapper.*;
 import com.sky.result.PageResult;
 import com.sky.service.OrderService;
 import com.sky.utils.WeChatPayUtil;
-import com.sky.vo.OrderPaymentVO;
-import com.sky.vo.OrderSubmitVO;
-import com.sky.vo.OrderVO;
+import com.sky.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -249,6 +247,13 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
+    public void cancel(Orders orders) {
+        orders.setStatus(Orders.CANCELLED);
+        orders.setCancelTime(LocalDateTime.now());
+        ordersMapper.update(orders);
+    }
+
     /**
      * 再来一单
      * @param id
@@ -273,5 +278,65 @@ public class OrderServiceImpl implements OrderService {
 
 
         shoppingCartMapper.insertBatch(shoppingCartList);
+    }
+
+    /**
+     * 各个状态的订单数量统计
+     * @return
+     */
+    @Override
+    public OrderStatisticsVO statistics() {
+        OrderStatisticsVO orderStatisticsVO = new OrderStatisticsVO();
+
+        orderStatisticsVO.setToBeConfirmed(ordersMapper.statistics(Orders.TO_BE_CONFIRMED));
+        orderStatisticsVO.setDeliveryInProgress(ordersMapper.statistics(Orders.DELIVERY_IN_PROGRESS));
+        orderStatisticsVO.setConfirmed(ordersMapper.statistics(Orders.CONFIRMED));
+
+
+        return orderStatisticsVO;
+    }
+
+    /**
+     * 接单
+     * @param orders
+     */
+    @Override
+    public void confirm(Orders orders) {
+        orders.setStatus(Orders.CONFIRMED);
+        ordersMapper.update(orders);
+    }
+
+    /**
+     * 拒单
+     * @param orders
+     */
+    @Override
+    public void rejection(Orders orders) {
+        orders.setStatus(Orders.CANCELLED);
+        orders.setCancelTime(LocalDateTime.now());
+        ordersMapper.update(orders);
+    }
+
+    /**
+     * 派送订单
+     * @param id
+     */
+    @Override
+    public void delivery(Long id) {
+        Orders orders = ordersMapper.getById(id);
+        orders.setStatus(Orders.DELIVERY_IN_PROGRESS);
+        ordersMapper.update(orders);
+    }
+
+    /**
+     *
+     * @param id
+     */
+    @Override
+    public void complete(Long id) {
+        Orders orders = ordersMapper.getById(id);
+        orders.setStatus(Orders.COMPLETED);
+        orders.setDeliveryTime(LocalDateTime.now());
+        ordersMapper.update(orders);
     }
 }
